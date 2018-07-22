@@ -1,11 +1,11 @@
 ### loading the libraries 
 library(RPostgreSQL)
-library(dplyr)
+library(DBI)
 
 ## connecting to the database with the credentials
-pw <- "psqldbase"
+pw <- "password"
 drv <- dbDriver("PostgreSQL")
-conn <- dbConnect(drv, dbname = "dvdrent", 
+conn <- dbConnect(drv, dbname = "dvdrental", 
                   host = "localhost", port = 5432,
                   password = pw, user = "postgres")
 
