@@ -13,7 +13,7 @@ graph <- startGraph(url = "http://localhost:7474/db/data/",
 
 ### get the top customers who rented the most
 query <- "MATCH (c:Customer)-[r:RENTED]->()
-          RETURN c.FirstName + ' ' + c.lastName AS customer,
+          RETURN c.firstName + ' ' + c.lastName AS customer,
             COUNT(r) AS total_rentals 
           ORDER BY total_rentals DESC LIMIT 10;"
 
