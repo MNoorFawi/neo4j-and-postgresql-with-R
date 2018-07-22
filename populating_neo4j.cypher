@@ -63,10 +63,10 @@ MERGE (c)-[f:FAN_OF]->(a);
 
 # get the total number of fans of Gina
 MATCH (g:Actor {FirstName: "Gina"})<-[:FAN_OF]-(c:Customer)
-RETURN g.FirstName +" "+ g.lastName AS actor, 
+RETURN g.firstName +" "+ g.lastName AS actor, 
 COUNT(c) AS number_of_fans;
 ### we can also visualize Gina with their fans
-MATCH (g:Actor {FirstName: "Gina"})<-[:FAN_OF]-(c:Customer)
+MATCH (g:Actor {firstName: "Gina"})<-[:FAN_OF]-(c:Customer)
 RETURN g, c;
 
 # each actor and his/her best fan
