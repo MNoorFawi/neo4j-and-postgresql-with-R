@@ -9,7 +9,7 @@
 
 library(RNeo4j)
 graph <- startGraph(url = "http://localhost:7474/db/data/", 
-                    username="neo4j", password="neodbase")
+                    username="neo4j", password="neo4j")
 
 ### get the top customers who rented the most
 query <- "MATCH (c:Customer)-[r:RENTED]->()
