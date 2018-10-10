@@ -1,4 +1,4 @@
-### "///" means that the file is in the import folder in the database parent folder
+// "///" means that the file is in the import folder in the database parent folder
 
 USING PERIODIC COMMIT
 LOAD CSV WITH HEADERS FROM "file:///actor.csv" AS row
@@ -27,49 +27,49 @@ CREATE INDEX ON :Actor(actorID);
 CREATE INDEX ON :Category(categoryID);
 CREATE INDEX ON :Customer(customerID);
 
-### we use "schema await" to wait until the indexes are online
+// we use "schema await" to wait until the indexes are online
 
-### having the nodes and the indexes we then create the relationships
+// having the nodes and the indexes we then create the relationships
 
-# 1st the RENTED relationship between customer and film
+// 1st the RENTED relationship between customer and film
 USING PERIODIC COMMIT
 LOAD CSV WITH HEADERS FROM "file:///customer_film.csv" AS row
 MATCH (c:Customer {customerID: row.customer_id})
 MATCH (f:Film {filmID: row.film_id})
 MERGE (c)-[:RENTED]->(f);
 
-# 2nd the ACTED_IN relationship between actor and film
+// 2nd the ACTED_IN relationship between actor and film
 USING PERIODIC COMMIT
 LOAD CSV WITH HEADERS FROM "file:///film_actor.csv" AS row
 MATCH (a:Actor {actorID: row.actor_id})
 MATCH (f:Film {filmID: row.film_id})
 MERGE (a)-[:ACTED_IN]->(f);
 
-# 3rd the OF_GENRE relationship between film and category
+// 3rd the OF_GENRE relationship between film and category
 USING PERIODIC COMMIT
 LOAD CSV WITH HEADERS FROM "file:///film_category.csv" AS row
 MATCH (f:Film {filmID: row.film_id})
 MATCH (c:Category {categoryID: row.category_id})
 MERGE (f)-[:OF_GENRE]->(c);
 
-# 4th the FAN_OF relationship between customer and actor
-#only when customer has rented more than two films for an actor
+// 4th the FAN_OF relationship between customer and actor
+// only when customer has rented more than two films for an actor
 MATCH (c:Customer)-[r:RENTED]->()<-[]-(a:Actor)
 WITH Count(r) AS rentals, a, c
 WHERE rentals > 2
 MERGE (c)-[f:FAN_OF]->(a);
 
-####### QUERYING THE DATABASE ########
+////// QUERYING THE DATABASE //////
 
-# get the total number of fans of Gina
+// get the total number of fans of Gina
 MATCH (g:Actor {FirstName: "Gina"})<-[:FAN_OF]-(c:Customer)
 RETURN g.firstName +" "+ g.lastName AS actor, 
 COUNT(c) AS number_of_fans;
-### we can also visualize Gina with their fans
+// we can also visualize Gina with their fans
 MATCH (g:Actor {firstName: "Gina"})<-[:FAN_OF]-(c:Customer)
 RETURN g, c;
 
-# each actor and his/her best fan
+// each actor and his/her best fan
 MATCH (c:Customer)-[r:RENTED]->()<-[]-(a:Actor)
 WITH c, a, COUNT(r) AS rentals
 RETURN c.firstName + " " + c.lastName AS customer,
