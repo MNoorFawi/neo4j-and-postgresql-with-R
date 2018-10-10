@@ -154,7 +154,7 @@ Now we have everything ready for Neo4j. So we will run the server from the comma
 
 Now we will populate the database and create its nodes and relationships using its cypher language from its console.
 
-``` cypher
+``` sql
 // "///" means that the file is in the import folder in the database parent folder
 
 ////// Reading Files & Creating the Nodes //////
