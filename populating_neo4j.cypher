@@ -69,11 +69,16 @@ COUNT(c) AS number_of_fans;
 MATCH (g:Actor {firstName: "Gina"})<-[:FAN_OF]-(c:Customer)
 RETURN g, c;
 
-// each actor and his/her best fan
+// a complicated query
+// each customer and his/her best actor
 MATCH (c:Customer)-[r:RENTED]->()<-[]-(a:Actor)
-WITH c, a, COUNT(r) AS rentals
-RETURN c.firstName + " " + c.lastName AS customer,
-MAX(rentals) AS number_of_rentals,
-a.firstName + " " + a.lastName AS actor
+WITH c.firstName + " " + c.lastName AS customer,
+     COUNT(r) AS rental,
+     a.firstName + " " + a.lastName AS actors
+ORDER BY rental DESC
+WITH customer,
+     COLLECT(rental)[0] AS number_of_rentals,
+     COLLECT(actors)[0] AS actor
+RETURN customer, number_of_rentals, actor
 ORDER BY number_of_rentals DESC LIMIT 10;
 
